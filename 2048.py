@@ -102,26 +102,84 @@ class GameField(object):
         moves['Up'] = lambda field: transpose(moves['Left'](transpose(field)))
         moves[
             'Down'] = lambda field: transpose(moves['Right'](transpose(field)))
+        if direction in moves:
+            if self.move_is_possible(direction):
+                self.field = moves[direction](self.field)
+                self.spawn()
+                return True
+            else:
+                return False
+
+    def move_is_possible(self, direction):
+        "Judge can move or not"
+
+        def row_is_left_moveable(row):
+            "move to left is possible"
+
+            def change(i):
+                """ if can move, return True. Else return False"""
+
+                if row[i] == 0 and row[i + 1] != 0:  # Can Move
+                    return True
+                if row[i] != 0 and row[i + 1] == row[i]:  # Can Merge
+                    return True
+                return False
+
+            return any(change(i) for i in range(len(row) - 1))
+
+        check = {}
+        check['Left']=lambda field:any(row_is_left_moveable(row) for row in field)
+        check['Right'] = lambda field: check['Left'](invent(field))
+        check['Up'] = lambda field: check['Left'](transpose(field))
+        check['Down'] = lambda field: check['Right'](transpose(field))
+        if direction in check:
+            return check[direction](self.field)
+        else:
+            return False
+
+    def is_win(self):
+        "iswin"
+        return any(any(i >= self.win_value for i in row) for row in self.field)
+
+    def is_gameover(self):
+        "gameover"
+        return not any(self.move_is_possible(move) for move in ACTIONS)
+
+    def draw(self, screen):
+        "Draw the game UI"
+        help_string1 = '(W)Up  (S)Down  (A)Left  (D)Right'
+        help_string2 = '(R)Restart  (Q)Exit'
+        gameover_string = 'GAMEOVER'
+        win_string = 'WIN'
+
+        def cast(string):
+            "show the help string on screen"
+            screen.addstr(string + '\n')
+        # TODO:
 
 
 def main(stdscr):
+    "main func"
+
     def init():
+        "inition"
         return 'Game'
 
     # Gameover and Win
     def not_game(state):
+        "not in game state"
         responses = defaultdict(lambda: state)  # defalut state
         responses['Restart'], responses[
             'Exit'] = 'Init', 'Exit'  # action with state
-        return responses[action]
+        return responses[action]  # FIXME:
 
     # game Func
     def game():
-        if action == 'Restart':
+        if action == 'Restart':  # FIXME:
             return "Init"
-        if action == 'Exit':
+        if action == 'Exit':  # FIXME:
             return 'Exit'
-        # if Success move a step:
+        # if Success move a step:#TODO:
         #    if win:
         #       return 'Win'
         #    if Fail:

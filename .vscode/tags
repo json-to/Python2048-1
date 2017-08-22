@@ -13,17 +13,21 @@ __init__	../2048.py	/^    def __init__(self, height=4, width=4, win=2048):$/;"	k
 choice	../2048.py	/^from random import randrange, choice$/;"	kind:namespace	line:6
 curses	../2048.py	/^import curses$/;"	kind:namespace	line:5
 defaultdict	../2048.py	/^from collections import defaultdict$/;"	kind:namespace	line:7
-game	../2048.py	/^    def game():$/;"	kind:function	line:113
+game	../2048.py	/^    def game():$/;"	kind:function	line:146
 get_user_action	../2048.py	/^def get_user_action(keyboard):$/;"	kind:function	line:34
-init	../2048.py	/^    def init():$/;"	kind:function	line:102
+init	../2048.py	/^    def init():$/;"	kind:function	line:135
 invent	../2048.py	/^def invent(field):$/;"	kind:function	line:45
-main	../2048.py	/^def main(stdscr):$/;"	kind:function	line:101
+is_gameover	../2048.py	/^    def is_gameover(self):$/;"	kind:member	line:130
+is_win	../2048.py	/^    def is_win(self):$/;"	kind:member	line:127
+main	../2048.py	/^def main(stdscr):$/;"	kind:function	line:134
 merge	../2048.py	/^            def merge(row):$/;"	kind:function	line:80
 move	../2048.py	/^    def move(self, direction):$/;"	kind:member	line:73
+move_is_possible	../2048.py	/^    def move_is_possible(self, direction):$/;"	kind:member	line:113
 move_row_left	../2048.py	/^        def move_row_left(row):$/;"	kind:function	line:74
-not_game	../2048.py	/^    def not_game(state):$/;"	kind:function	line:106
+not_game	../2048.py	/^    def not_game(state):$/;"	kind:function	line:139
 randrange	../2048.py	/^from random import randrange, choice$/;"	kind:namespace	line:6
 reset	../2048.py	/^    def reset(self):$/;"	kind:member	line:58
+row_is_left_moveable	../2048.py	/^        def row_is_left_moveable(row):$/;"	kind:function	line:114
 spawn	../2048.py	/^    def spawn(self):  # gengral 2 or 4 in the UI$/;"	kind:member	line:67
 tighten	../2048.py	/^            def tighten(row):$/;"	kind:function	line:75
 transpose	../2048.py	/^def transpose(field):$/;"	kind:function	line:41
