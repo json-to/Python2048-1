@@ -39,11 +39,11 @@ def get_user_action(keyboard):
 
 
 def transpose(field):
-    return [list(row) for row in zip(*field)]# for moving
+    return [list(row) for row in zip(*field)]  # for moving
 
 
 def invent(field):
-    return [row[::-1] for row in field]# for moving
+    return [row[::-1] for row in field]  # for moving
 
 
 class GameField(object):
@@ -96,6 +96,12 @@ class GameField(object):
 
             return tighten(merge(tighten(row)))
 
+        moves = {}
+        moves['Left'] = lambda field: [move_row_left(row) for row in field]
+        moves['Right'] = lambda field: invent(moves['Left'](invent(field)))
+        moves['Up'] = lambda field: transpose(moves['Left'](transpose(field)))
+        moves[
+            'Down'] = lambda field: transpose(moves['Right'](transpose(field)))
 
 
 def main(stdscr):
