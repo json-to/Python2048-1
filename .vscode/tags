@@ -4,30 +4,70 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+111.py	../111.py	1;"	kind:file	line:1
 2048.py	../2048.py	1;"	kind:file	line:1
 ACTIONS	../2048.py	/^ACTIONS = ['Up', 'Left', 'Down', 'Right', 'Restart', 'exit']$/;"	kind:variable	line:10
 Action_Dict	../2048.py	/^Action_Dict = dict(zip(LETTERCODE, ACTIONS * 2))$/;"	kind:variable	line:14
+GameField	../111.py	/^class GameField(object):$/;"	kind:class	line:23
 GameField	../2048.py	/^class GameField(object):$/;"	kind:class	line:49
 LETTERCODE	../2048.py	/^LETTERCODE = [ord(ch) for ch in 'WASDRQwasdrq']$/;"	kind:variable	line:12
+__init__	../111.py	/^    def __init__(self, height=4, width=4, win=2048):$/;"	kind:member	line:24
 __init__	../2048.py	/^    def __init__(self, height=4, width=4, win=2048):$/;"	kind:member	line:50
+actions	../111.py	/^actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']$/;"	kind:variable	line:8
+actions_dict	../111.py	/^actions_dict = dict(zip(letter_codes, actions * 2))$/;"	kind:variable	line:9
+and	../111.py	/^from random import randrange, choice # generate and place new tile$/;"	kind:namespace	line:4
+cast	../111.py	/^        def cast(string):$/;"	kind:function	line:94
+cast	../2048.py	/^        def cast(string):$/;"	kind:function	line:155
+change	../111.py	/^            def change(i): # true if there'll be change in i-th tile$/;"	kind:function	line:132
+change	../2048.py	/^            def change(i):$/;"	kind:function	line:119
+choice	../111.py	/^from random import randrange, choice # generate and place new tile$/;"	kind:namespace	line:4
 choice	../2048.py	/^from random import randrange, choice$/;"	kind:namespace	line:6
+curses	../111.py	/^import curses$/;"	kind:namespace	line:3
 curses	../2048.py	/^import curses$/;"	kind:namespace	line:5
+defaultdict	../111.py	/^from collections import defaultdict$/;"	kind:namespace	line:5
 defaultdict	../2048.py	/^from collections import defaultdict$/;"	kind:namespace	line:7
-game	../2048.py	/^    def game():$/;"	kind:function	line:146
+draw	../111.py	/^    def draw(self, screen):$/;"	kind:member	line:89
+draw	../2048.py	/^    def draw(self, screen):$/;"	kind:member	line:148
+draw_hor_separator	../111.py	/^        def draw_hor_separator():$/;"	kind:function	line:97
+draw_row	../111.py	/^        def draw_row(row):$/;"	kind:function	line:105
+game	../111.py	/^    def game():$/;"	kind:function	line:173
+game	../2048.py	/^    def game():$/;"	kind:function	line:177
+generate	../111.py	/^from random import randrange, choice # generate and place new tile$/;"	kind:namespace	line:4
+get_user_action	../111.py	/^def get_user_action(keyboard):    $/;"	kind:function	line:11
 get_user_action	../2048.py	/^def get_user_action(keyboard):$/;"	kind:function	line:34
-init	../2048.py	/^    def init():$/;"	kind:function	line:135
+init	../111.py	/^    def init():$/;"	kind:function	line:159
+init	../2048.py	/^    def init():$/;"	kind:function	line:164
 invent	../2048.py	/^def invent(field):$/;"	kind:function	line:45
-is_gameover	../2048.py	/^    def is_gameover(self):$/;"	kind:member	line:130
-is_win	../2048.py	/^    def is_win(self):$/;"	kind:member	line:127
-main	../2048.py	/^def main(stdscr):$/;"	kind:function	line:134
+invert	../111.py	/^def invert(field):$/;"	kind:function	line:20
+is_gameover	../111.py	/^    def is_gameover(self):$/;"	kind:member	line:86
+is_gameover	../2048.py	/^    def is_gameover(self):$/;"	kind:member	line:144
+is_win	../111.py	/^    def is_win(self):$/;"	kind:member	line:83
+is_win	../2048.py	/^    def is_win(self):$/;"	kind:member	line:140
+letter_codes	../111.py	/^letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']$/;"	kind:variable	line:7
+main	../111.py	/^def main(stdscr):$/;"	kind:function	line:158
+main	../2048.py	/^def main(stdscr):$/;"	kind:function	line:161
+merge	../111.py	/^            def merge(row):$/;"	kind:function	line:47
 merge	../2048.py	/^            def merge(row):$/;"	kind:function	line:80
+move	../111.py	/^    def move(self, direction):$/;"	kind:member	line:40
 move	../2048.py	/^    def move(self, direction):$/;"	kind:member	line:73
+move_is_possible	../111.py	/^    def move_is_possible(self, direction):$/;"	kind:member	line:130
 move_is_possible	../2048.py	/^    def move_is_possible(self, direction):$/;"	kind:member	line:113
+move_row_left	../111.py	/^        def move_row_left(row):$/;"	kind:function	line:41
 move_row_left	../2048.py	/^        def move_row_left(row):$/;"	kind:function	line:74
-not_game	../2048.py	/^    def not_game(state):$/;"	kind:function	line:139
+new	../111.py	/^from random import randrange, choice # generate and place new tile$/;"	kind:namespace	line:4
+not_game	../111.py	/^    def not_game(state):$/;"	kind:function	line:164
+not_game	../2048.py	/^    def not_game(state):$/;"	kind:function	line:169
+place	../111.py	/^from random import randrange, choice # generate and place new tile$/;"	kind:namespace	line:4
+randrange	../111.py	/^from random import randrange, choice # generate and place new tile$/;"	kind:namespace	line:4
 randrange	../2048.py	/^from random import randrange, choice$/;"	kind:namespace	line:6
+reset	../111.py	/^    def reset(self):$/;"	kind:member	line:32
 reset	../2048.py	/^    def reset(self):$/;"	kind:member	line:58
-row_is_left_moveable	../2048.py	/^        def row_is_left_moveable(row):$/;"	kind:function	line:114
+row_is_left_movable	../111.py	/^        def row_is_left_movable(row): $/;"	kind:function	line:131
+row_is_left_moveable	../2048.py	/^        def row_is_left_moveable(row):$/;"	kind:function	line:116
+spawn	../111.py	/^    def spawn(self):$/;"	kind:member	line:125
 spawn	../2048.py	/^    def spawn(self):  # gengral 2 or 4 in the UI$/;"	kind:member	line:67
+tighten	../111.py	/^            def tighten(row): # squeese non-zero elements together$/;"	kind:function	line:42
 tighten	../2048.py	/^            def tighten(row):$/;"	kind:function	line:75
+tile	../111.py	/^from random import randrange, choice # generate and place new tile$/;"	kind:namespace	line:4
+transpose	../111.py	/^def transpose(field):$/;"	kind:function	line:17
 transpose	../2048.py	/^def transpose(field):$/;"	kind:function	line:41

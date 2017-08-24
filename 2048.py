@@ -1,56 +1,34 @@
-# author:WangErPang(wang.erpang@qq.com)
-#!/usr/bin/env python
-# -*- coding=utf-8 -*-
+#-*- coding:utf-8 -*-
 
 import curses
-from random import randrange, choice
+from random import randrange, choice  # generate and place new tile
 from collections import defaultdict
 
-# basic actions
-ACTIONS = ['Up', 'Left', 'Down', 'Right', 'Restart', 'exit']
-# code linker
-LETTERCODE = [ord(ch) for ch in 'WASDRQwasdrq']
-# linker
-Action_Dict = dict(zip(LETTERCODE, ACTIONS * 2))
-
-#logic
-# Init:init()
-#     ->game
-# Game: game()
-#     ->Game
-#     ->Win
-#     ->Gameover
-#     ->exit
-# Win :not_game(win)
-#     ->init
-#     ->exit
-# Game: notgame(Gameover)
-#     ->init
-#     ->exit
-# Exit: break
+letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
+actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
+actions_dict = dict(zip(letter_codes, actions * 2))
 
 
-# game main circle
 def get_user_action(keyboard):
-    char = 'N'
-    while char not in Action_Dict:
+    char = "N"
+    while char not in actions_dict:
         char = keyboard.getch()
-    return Action_Dict[char]
+    return actions_dict[char]
 
 
 def transpose(field):
-    return [list(row) for row in zip(*field)]  # for moving
+    return [list(row) for row in zip(*field)]
 
 
-def invent(field):
-    return [row[::-1] for row in field]  # for moving
+def invert(field):
+    return [row[::-1] for row in field]
 
 
 class GameField(object):
     def __init__(self, height=4, width=4, win=2048):
         self.height = height
         self.width = width
-        self.win_value = 2048
+        self.win_value = win
         self.score = 0
         self.highscore = 0
         self.reset()
@@ -60,19 +38,13 @@ class GameField(object):
             self.highscore = self.score
         self.score = 0
         self.field = [[0 for i in range(self.width)]
-                      for j in range(self.width)]
+                      for j in range(self.height)]
         self.spawn()
-        self.spawn()  # general 2
-
-    def spawn(self):  # gengral 2 or 4 in the UI
-        new_element = 4 if randrange(100) > 89 else 2
-        (i, j) = choice([(i, j)
-                         for i in range(self.width)
-                         for j in range(self.height) if self.field[i][j] == 0])
+        self.spawn()
 
     def move(self, direction):
         def move_row_left(row):
-            def tighten(row):
+            def tighten(row):  # squeese non-zero elements together
                 new_row = [i for i in row if i != 0]
                 new_row += [0 for i in range(len(row) - len(new_row))]
                 return new_row
@@ -97,11 +69,15 @@ class GameField(object):
             return tighten(merge(tighten(row)))
 
         moves = {}
-        moves['Left'] = lambda field: [move_row_left(row) for row in field]
-        moves['Right'] = lambda field: invent(moves['Left'](invent(field)))
-        moves['Up'] = lambda field: transpose(moves['Left'](transpose(field)))
-        moves[
-            'Down'] = lambda field: transpose(moves['Right'](transpose(field)))
+        moves['Left']  = lambda field:                              \
+                [move_row_left(row) for row in field]
+        moves['Right'] = lambda field:                              \
+                invert(moves['Left'](invert(field)))
+        moves['Up']    = lambda field:                              \
+                transpose(moves['Left'](transpose(field)))
+        moves['Down']  = lambda field:                              \
+                transpose(moves['Right'](transpose(field)))
+
         if direction in moves:
             if self.move_is_possible(direction):
                 self.field = moves[direction](self.field)
@@ -110,70 +86,37 @@ class GameField(object):
             else:
                 return False
 
-    def move_is_possible(self, direction):
-        "Judge can move or not"
-
-        def row_is_left_moveable(row):
-            "move to left is possible"
-
-            def change(i):
-                """ if can move, return True. Else return False"""
-
-                if row[i] == 0 and row[i + 1] != 0:  # Can Move
-                    return True
-                if row[i] != 0 and row[i + 1] == row[i]:  # Can Merge
-                    return True
-                return False
-
-            return any(change(i) for i in range(len(row) - 1))
-
-        check = {}
-        check['Left']=lambda field:any(row_is_left_moveable(row) for row in field)
-        check['Right'] = lambda field: check['Left'](invent(field))
-        check['Up'] = lambda field: check['Left'](transpose(field))
-        check['Down'] = lambda field: check['Right'](transpose(field))
-        if direction in check:
-            return check[direction](self.field)
-        else:
-            return False
-
     def is_win(self):
-        "iswin"
         return any(any(i >= self.win_value for i in row) for row in self.field)
 
     def is_gameover(self):
-        "gameover"
-        return not any(self.move_is_possible(move) for move in ACTIONS)
+        return not any(self.move_is_possible(move) for move in actions)
 
     def draw(self, screen):
-        "Draw the game UI"
-        help_string1 = '(W)Up  (S)Down  (A)Left  (D)Right'
-        help_string2 = '(R)Restart  (Q)Exit'
-        gameover_string = 'GAMEOVER'
-        win_string = 'WIN'
+        help_string1 = '(W)Up (S)Down (A)Left (D)Right'
+        help_string2 = '     (R)Restart (Q)Exit'
+        gameover_string = '           GAME OVER'
+        win_string = '          YOU WIN!'
 
         def cast(string):
-            "show the help string on screen"
             screen.addstr(string + '\n')
 
         def draw_hor_separator():
-            '画出水平分割线'
             line = '+' + ('+------' * self.width + '+')[1:]
             separator = defaultdict(lambda: line)
-            if not hasattr(draw_hor_separator, 'counter'):
+            if not hasattr(draw_hor_separator, "counter"):
                 draw_hor_separator.counter = 0
             cast(separator[draw_hor_separator.counter])
             draw_hor_separator.counter += 1
 
         def draw_row(row):
-            'draw row'
-            cast(''.join('|{: ^5} '.format(num) if num > 0 else '|     '
+            cast(''.join('|{: ^5} '.format(num) if num > 0 else '|      '
                          for num in row) + '|')
 
         screen.clear()
         cast('SCORE: ' + str(self.score))
         if 0 != self.highscore:
-            cast("HIGHSCORE: " + str(self.highscore))
+            cast('HIGHSCORE: ' + str(self.highscore))
         for row in self.field:
             draw_hor_separator()
             draw_row(row)
@@ -187,6 +130,42 @@ class GameField(object):
                 cast(help_string1)
         cast(help_string2)
 
+    def spawn(self):
+        new_element = 4 if randrange(100) > 89 else 2
+        (i, j) = choice([(i, j)
+                         for i in range(self.width)
+                         for j in range(self.height) if self.field[i][j] == 0])
+        self.field[i][j] = new_element
+
+    def move_is_possible(self, direction):
+        def row_is_left_movable(row):
+            def change(i):  # true if there'll be change in i-th tile
+                if row[i] == 0 and row[i + 1] != 0:  # Move
+                    return True
+                if row[i] != 0 and row[i + 1] == row[i]:  # Merge
+                    return True
+                return False
+
+            return any(change(i) for i in range(len(row) - 1))
+
+        check = {}
+        check['Left']  = lambda field:                              \
+                any(row_is_left_movable(row) for row in field)
+
+        check['Right'] = lambda field:                              \
+                 check['Left'](invert(field))
+
+        check['Up']    = lambda field:                              \
+                check['Left'](transpose(field))
+
+        check['Down']  = lambda field:                              \
+                check['Right'](transpose(field))
+
+        if direction in check:
+            return check[direction](self.field)
+        else:
+            return False
+
 
 def main(stdscr):
     def init():
@@ -199,8 +178,9 @@ def main(stdscr):
         game_field.draw(stdscr)
         #读取用户输入得到action，判断是重启游戏还是结束游戏
         action = get_user_action(stdscr)
-        responses = defaultdict(lambda: state) #默认是当前状态，没有行为就会一直在当前界面循环
-        responses['Restart'], responses['Exit'] = 'Init', 'Exit' #对应不同的行为转换到不同的状态
+        responses = defaultdict(lambda: state)  #默认是当前状态，没有行为就会一直在当前界面循环
+        responses['Restart'], responses[
+            'Exit'] = 'Init', 'Exit'  #对应不同的行为转换到不同的状态
         return responses[action]
 
     def game():
@@ -213,29 +193,27 @@ def main(stdscr):
             return 'Init'
         if action == 'Exit':
             return 'Exit'
-        if game_field.move(action): # move successful
+        if game_field.move(action):  # move successful
             if game_field.is_win():
                 return 'Win'
             if game_field.is_gameover():
                 return 'Gameover'
         return 'Game'
 
-
     state_actions = {
-            'Init': init,
-            'Win': lambda: not_game('Win'),
-            'Gameover': lambda: not_game('Gameover'),
-            'Game': game
-        }
+        'Init': init,
+        'Win': lambda: not_game('Win'),
+        'Gameover': lambda: not_game('Gameover'),
+        'Game': game
+    }
 
-    curses.use_default_colors()
-    game_field = GameField(win=32)
-
+    game_field = GameField(win=2048)
 
     state = 'Init'
 
     #状态机开始循环
     while state != 'Exit':
         state = state_actions[state]()
+
 
 curses.wrapper(main)
